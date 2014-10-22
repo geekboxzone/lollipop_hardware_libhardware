@@ -25,6 +25,7 @@
 
 __BEGIN_DECLS
 
+#define RK_FBIOSET_CONFIG_DONE         0x4628
 /*
  * Value for the hw_module_t.tag field
  */
