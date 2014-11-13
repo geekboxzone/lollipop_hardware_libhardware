@@ -214,6 +214,22 @@ typedef struct hwc_layer_1 {
              * The visible region INCLUDES areas overlapped by a translucent layer.
              */
             hwc_region_t visibleRegionScreen;
+    		char LayerName[LayerNameLength + 1];
+			int32_t bufferCount;
+            int32_t bufferUpdate;
+            int32_t bufferChange;
+            int32_t dospecialflag;
+            int32_t exTop;
+            int32_t exBottom;
+            int32_t exLeft;
+            int32_t exRight;
+            int32_t exAddrOffset;
+			uint32_t realtransform;
+			#ifdef TARGET_BOARD_PLATFORM_RK312X
+			uint32_t direct_fd;
+			#else
+			uint32_t direct_addr;
+			#endif
 
             /* Sync fence object that will be signaled when the buffer's
              * contents are available. May be -1 if the contents are already
@@ -417,6 +433,7 @@ typedef struct hwc_display_contents_1 {
      * performed by SurfaceFlinger.
      */
     uint32_t flags;
+    uint32_t skipflag;
     size_t numHwLayers;
     hwc_layer_1_t hwLayers[0];
 
@@ -587,6 +604,12 @@ typedef struct hwc_composer_device_1 {
     int (*set)(struct hwc_composer_device_1 *dev,
                 size_t numDisplays, hwc_display_contents_1_t** displays);
 
+	int (*fbPost2)(struct hwc_composer_device_1 *dev,size_t numDisplays, hwc_display_contents_1_t** displays);
+	int (*fbPost3)(struct hwc_composer_device_1 *dev,size_t numDisplays, hwc_display_contents_1_t** displays,buffer_handle_t buffer);
+    int (*layer_recover)(struct hwc_composer_device_1 *dev,
+                    size_t numDisplays, hwc_display_contents_1_t** displays);
+	int (*rkCopybit)(struct hwc_composer_device_1 *dev,buffer_handle_t src_handle,
+	                    buffer_handle_t dst_handle,int flag);
     /*
      * eventControl(..., event, enabled)
      * Enables or disables h/w composer events for a display.
