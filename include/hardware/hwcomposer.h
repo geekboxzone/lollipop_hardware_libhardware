@@ -47,6 +47,8 @@ __BEGIN_DECLS
  */
 #define HWC_HARDWARE_COMPOSER   "composer"
 
+#define	HWC_UNREFERENCED_PARAMETER(param) (param) = (param)
+
 typedef struct hwc_rect {
     int left;
     int top;
