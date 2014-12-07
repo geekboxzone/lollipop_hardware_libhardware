@@ -630,6 +630,12 @@ RGA_set_mmu_info(
 		unsigned int base_addr,
 		unsigned char  page_size
 		);
+void rga_set_fds_offsets(
+        struct rga_req *rga_request,
+        unsigned short src_fd,
+        unsigned short dst_fd,
+        unsigned int src_offset, 
+        unsigned int dst_offset);
 
 
 #ifdef __cplusplus

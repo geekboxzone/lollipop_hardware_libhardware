@@ -227,11 +227,8 @@ typedef struct hwc_layer_1 {
             int32_t exRight;
             int32_t exAddrOffset;
 			uint32_t realtransform;
-			#ifdef TARGET_BOARD_PLATFORM_RK312X
 			uint32_t direct_fd;
-			#else
 			uint32_t direct_addr;
-			#endif
 
             /* Sync fence object that will be signaled when the buffer's
              * contents are available. May be -1 if the contents are already
