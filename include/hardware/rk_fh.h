@@ -1,6 +1,9 @@
-#define RK_WIN_MAX_REGION 4
-#define RK30_MAX_LAYER_SUPPORT 4
-#define RK_MAX_BUF_NUM 10
+#define RK30_MAX_LCDC_SUPPORT	2
+#define RK30_MAX_LAYER_SUPPORT	5
+#define RK_MAX_FB_SUPPORT       5
+#define RK_WIN_MAX_AREA		    4
+#define RK_MAX_BUF_NUM       	11
+
 #define u32 unsigned int
 #define u8  unsigned char
 #define u16 unsigned  short
@@ -29,37 +32,44 @@ struct rk_lcdc_post_cfg{
 	u32 xsize;
 	u32 ysize;
 };
+
 struct rk_fb_area_par {
-	int ion_fd;	
+	u8  data_format;        /*layer data fmt*/
+	short ion_fd;
 	unsigned long phy_addr;
-	int acq_fence_fd;
-	u32 x_offset;		
-	u32 y_offset;		
-	u32 xpos;		/*start point in panel  --->LCDC_WINx_DSP_ST*/
-	u32 ypos;
-	u32 xsize;		/* display window width/height  -->LCDC_WINx_DSP_INFO*/
-	u32 ysize;
-	u32 xact;		/*origin display window size -->LCDC_WINx_ACT_INFO*/
-	u32 yact;
-	u32 xvir;		/*virtual width/height     -->LCDC_WINx_VIR*/
-	u32 yvir;	
+	short acq_fence_fd;
+	u16  x_offset;
+	u16  y_offset;
+	u16 xpos;		/*start point in panel  --->LCDC_WINx_DSP_ST*/
+	u16 ypos;
+	u16 xsize;		/* display window width/height  -->LCDC_WINx_DSP_INFO*/
+	u16 ysize;
+	u16 xact;		/*origin display window size -->LCDC_WINx_ACT_INFO*/
+	u16 yact;
+	u16 xvir;		/*virtual width/height     -->LCDC_WINx_VIR*/
+	u16 yvir;
+	u8  fbdc_en;
+	u8  fbdc_cor_en;
+	u8  fbdc_data_format;
+	u16 reserved0;
+	u32 reserved1;
 };
 
-
 struct rk_fb_win_par {
-	u8 data_format;        /*layer data fmt*/
-	u8 win_id;
-	u8 z_order;		/*win sel layer*/
-	struct rk_fb_area_par area_par[RK_WIN_MAX_REGION];
-	u32 alpha_mode;
-	u32 g_alpha_val;
+	u8  win_id;
+	u8  z_order;		/*win sel layer*/
+	u8  alpha_mode;
+	u16 g_alpha_val;
+	u8  mirror_en;
+	struct rk_fb_area_par area_par[RK_WIN_MAX_AREA];
+	u32 reserved0;
 };
 
 struct rk_fb_win_cfg_data {
-	int ret_fence_fd;
-	int rel_fence_fd[RK_MAX_BUF_NUM];
+	u8  wait_fs;
+	short ret_fence_fd;
+	short rel_fence_fd[RK_MAX_BUF_NUM];
 	struct  rk_fb_win_par win_par[RK30_MAX_LAYER_SUPPORT];
 	struct  rk_lcdc_post_cfg post_cfg;
-	u8      wait_fs;
-	//u8      fence_begin;
 };
+
