@@ -50,6 +50,16 @@ __BEGIN_DECLS
 #define BT_PROFILE_GATT_ID "gatt"
 #define BT_PROFILE_AV_RC_ID "avrcp"
 #define BT_PROFILE_AV_RC_CTRL_ID "avrcp_ctrl"
+#ifdef VERIFIER
+#define BT_PROFILE_BNEP_VERIFIER_ID "verify_bnep"
+#define BT_PROFILE_AVDTP_VERIFIER_ID "verify_avdtp"
+#endif
+#ifdef TESTER
+#define BT_PROFILE_BNEP_TESTER_ID "test_bnep"
+#define BT_PROFILE_AVDTP_TESTER_ID "test_avdtp"
+#define BT_PROFILE_L2CAP_TESTER_ID "test_l2cap"
+#endif
+
 
 /** Bluetooth Address */
 typedef struct {
@@ -353,6 +363,11 @@ typedef void (*callback_thread_event)(bt_cb_thread_evt evt);
 /** Bluetooth Test Mode Callback */
 /* Receive any HCI event from controller. Must be in DUT Mode for this callback to be received */
 typedef void (*dut_mode_recv_callback)(uint16_t opcode, uint8_t *buf, uint8_t len);
+#ifdef BDT_BTA_FM_DEBUG
+/* FM mitigation call back */
+typedef void (*bt_fm_mitigation_callback)(uint32_t status, uint32_t seq);
+#endif
+
 
 /* LE Test mode callbacks
 * This callback shall be invoked whenever the le_tx_test, le_rx_test or le_test_end is invoked
@@ -387,6 +402,10 @@ typedef struct {
     dut_mode_recv_callback dut_mode_recv_cb;
     le_test_mode_callback le_test_mode_cb;
     energy_info_callback energy_info_cb;
+	#ifdef BDT_BTA_FM_DEBUG
+		 bt_fm_mitigation_callback bt_fm_mitigation_cb;
+	#endif
+
 } bt_callbacks_t;
 
 typedef void (*alarm_cb)(void *data);
@@ -525,7 +544,9 @@ typedef struct {
     /** Bluetooth Test Mode APIs - Bluetooth must be enabled for these APIs */
     /* Configure DUT Mode - Use this mode to enter/exit DUT mode */
     int (*dut_mode_configure)(uint8_t enable);
-
+	/*enable HCI logging dynamically */
+	int (*hci_logging)(int status);
+	int (*set_hci_logging)(int status);
     /* Send any test HCI (vendor-specific) command to the controller. Must be in DUT Mode */
     int (*dut_mode_send)(uint16_t opcode, uint8_t *buf, uint8_t len);
     /** BLE Test Mode APIs */
@@ -544,9 +565,10 @@ typedef struct {
       * Success indicates that the VSC command was sent to controller
       */
     int (*read_energy_info)();
-	
-	/** Get FM module interface */
-    const void* (*get_fm_interface) ();
+	#ifdef BDT_BTA_FM_DEBUG
+	/* fm mitigation request */
+	int (*send_fm_mitigation_req)(uint8_t *chmask);
+	#endif
 } bt_interface_t;
 
 /** TODO: Need to add APIs for Service Discovery, Service authorization and
