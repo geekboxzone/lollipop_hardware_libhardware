@@ -544,9 +544,11 @@ typedef struct {
     /** Bluetooth Test Mode APIs - Bluetooth must be enabled for these APIs */
     /* Configure DUT Mode - Use this mode to enter/exit DUT mode */
     int (*dut_mode_configure)(uint8_t enable);
+#ifdef SOFIA_BOARD
 	/*enable HCI logging dynamically */
 	int (*hci_logging)(int status);
 	int (*set_hci_logging)(int status);
+#endif
     /* Send any test HCI (vendor-specific) command to the controller. Must be in DUT Mode */
     int (*dut_mode_send)(uint16_t opcode, uint8_t *buf, uint8_t len);
     /** BLE Test Mode APIs */
@@ -565,6 +567,10 @@ typedef struct {
       * Success indicates that the VSC command was sent to controller
       */
     int (*read_energy_info)();
+	
+	/** Get FM module interface */
+    const void* (*get_fm_interface) ();
+	
 	#ifdef BDT_BTA_FM_DEBUG
 	/* fm mitigation request */
 	int (*send_fm_mitigation_req)(uint8_t *chmask);
