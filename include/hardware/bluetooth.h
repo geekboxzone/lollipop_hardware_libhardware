@@ -82,8 +82,10 @@ typedef enum {
 typedef enum {
     BT_STATE_OFF,
     BT_STATE_ON,
+#ifndef SOFIA_BOARD
     BT_RADIO_OFF,
     BT_RADIO_ON
+#endif
 }   bt_state_t;
 
 /** Bluetooth Error Status */
@@ -461,6 +463,7 @@ typedef struct {
     /** Disable Bluetooth. */
     int (*disable)(void);
 
+#ifndef SOFIA_BOARD
     /** This ensures the chip is Powered ON  to support other radios in the combo chip.
      * If the chip is OFF it set the chip to ON, if it is already ON it just increases the radio ref count
      * to keep track when to Power OFF */
@@ -469,6 +472,7 @@ typedef struct {
     /** This decreases radio ref count  and ensures that chip is Powered OFF
      * when the radio ref count becomes zero. */
     int (*disableRadio)(void);
+#endif
 
     /** Closes the interface. */
     void (*cleanup)(void);
@@ -567,10 +571,12 @@ typedef struct {
       * Success indicates that the VSC command was sent to controller
       */
     int (*read_energy_info)();
-	
+
+#ifndef SOFIA_BOARD	
 	/** Get FM module interface */
     const void* (*get_fm_interface) ();
-	
+#endif	
+
 	#ifdef BDT_BTA_FM_DEBUG
 	/* fm mitigation request */
 	int (*send_fm_mitigation_req)(uint8_t *chmask);
