@@ -75,7 +75,7 @@ typedef struct tagIMG_native_handle_t
 	 * by free() (alloc_device_t) and unmap() (gralloc_module_t).
 	 */
 
-#define IMG_NATIVE_HANDLE_NUMFDS (MAX_SRV_SYNC_OBJS + MAX_SUB_ALLOCS + 1)
+#define IMG_NATIVE_HANDLE_NUMFDS (MAX_SRV_SYNC_OBJS + MAX_SUB_ALLOCS)
 	/* The `syncfd' field is used to export PVRSRV_CLIENT_SYNC_PRIM to
 	 * another process. Its producer/consumer rules should match the
 	 * PVRSRV_MEMDESC handles, except that there is only one sync
@@ -88,10 +88,7 @@ typedef struct tagIMG_native_handle_t
 	 */
 	int aiSyncFD[MAX_SRV_SYNC_OBJS];
 
-    /*
-     * zxl: for rockchip,it's equal to fd[0]
-     */
-    int     share_fd;
+
 
 	/* The `fd' field is used to "export" a meminfo to another process.
 	 * Therefore, it is allocated by alloc_device_t, and consumed by
@@ -99,7 +96,7 @@ typedef struct tagIMG_native_handle_t
 	 */
 	int fd[MAX_SUB_ALLOCS];
 
-#define IMG_NATIVE_HANDLE_NUMINTS ((sizeof(unsigned long long) / sizeof(int)) + 5 + 12 + (sizeof(void*) / sizeof(int)))
+#define IMG_NATIVE_HANDLE_NUMINTS ((sizeof(unsigned long long) / sizeof(int)) + 5 + 13 + (sizeof(void*) / sizeof(int)))
 
 	/* A KERNEL unique identifier for any exported kernel meminfo. Each
 	 * exported kernel meminfo will have a unique stamp, but note that in
@@ -137,6 +134,10 @@ typedef struct tagIMG_native_handle_t
 	int     size;
 
     int     offset;
+    /*
+     * zxl: for rockchip,it's equal to fd[0]
+     */
+    int     share_fd;
     int     video_addr;
     int     video_width;
     int     video_height;
