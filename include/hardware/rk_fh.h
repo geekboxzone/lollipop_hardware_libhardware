@@ -36,7 +36,7 @@ struct rk_lcdc_post_cfg{
 struct rk_fb_area_par {
 	u8  data_format;        /*layer data fmt*/
 	short ion_fd;
-	unsigned long phy_addr;
+	unsigned int phy_addr;
 	short acq_fence_fd;
 	u16  x_offset;
 	u16  y_offset;
