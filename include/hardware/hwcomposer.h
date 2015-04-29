@@ -221,8 +221,8 @@ typedef struct hwc_layer_1 {
             int32_t bufferUpdate;
             int32_t bufferChange;
             int32_t dospecialflag;
-            int32_t exTop;
-            int32_t exBottom;
+            int32_t alreadyStereo;
+            int32_t displayStereo;
             int32_t exLeft;
             int32_t exRight;
             int32_t exAddrOffset;
