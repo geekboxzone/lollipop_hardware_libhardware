@@ -710,7 +710,24 @@ void rga_set_fds_offsets(
         unsigned int src_offset, 
         unsigned int dst_offset);
 
+int
+RGA_set_src_fence_flag(
+    struct rga_req *msg,
+    int acq_fence,
+    int src_flag
+);
 
+
+int
+RGA_set_dst_fence_flag(
+    struct rga_req *msg,
+    int dst_flag
+);
+
+int
+RGA_get_dst_fence(
+    struct rga_req *msg
+);
 #ifdef __cplusplus
 }
 #endif
