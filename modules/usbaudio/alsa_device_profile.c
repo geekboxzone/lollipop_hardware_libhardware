@@ -119,15 +119,7 @@ static unsigned int round_to_16_mult(unsigned int size)
 unsigned profile_calc_min_period_size(alsa_device_profile* profile, unsigned sample_rate)
 {
     ALOGV("profile_calc_min_period_size(%p, rate:%d)", profile, sample_rate);
-    if (profile == NULL) {
-        return DEFAULT_PERIOD_SIZE;
-    } else {
-        unsigned num_sample_frames = (sample_rate * BUFF_DURATION_MS) / 1000;
-        if (num_sample_frames < profile->min_period_size) {
-            num_sample_frames = profile->min_period_size;
-        }
-        return round_to_16_mult(num_sample_frames) * 2;
-    }
+    return DEFAULT_PERIOD_SIZE;
 }
 
 unsigned int profile_get_period_size(alsa_device_profile* profile, unsigned sample_rate)
